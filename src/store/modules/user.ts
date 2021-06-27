@@ -17,6 +17,7 @@ interface UserState {
   token?: string;
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
+  lastUpdateTime: number;
 }
 
 export const useUserStore = defineStore({
@@ -30,6 +31,8 @@ export const useUserStore = defineStore({
     roleList: [],
     // Whether the login expired
     sessionTimeout: false,
+    // Last load from server
+    lastUpdateTime: 0,
   }),
   getters: {
     getUserInfo(): UserInfo {
@@ -44,6 +47,9 @@ export const useUserStore = defineStore({
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
     },
+    getLastUpdateTime(): number {
+      return this.lastUpdateTime;
+    },
   },
   actions: {
     setToken(info: string | undefined) {
@@ -56,6 +62,7 @@ export const useUserStore = defineStore({
     },
     setUserInfo(info: UserInfo) {
       this.userInfo = info;
+      this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
     },
     setSessionTimeout(flag: boolean) {

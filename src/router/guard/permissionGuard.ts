@@ -53,6 +53,10 @@ export function createPermissionGuard(router: Router) {
       next(redirectData);
       return;
     }
+    // 无论是哪种权限，刷新页面时都重新获取用户信息
+    if (userStore.getLastUpdateTime === 0) {
+      await userStore.getUserInfoAction();
+    }
     if (permissionStore.getIsDynamicAddedRoute) {
       next();
       return;
