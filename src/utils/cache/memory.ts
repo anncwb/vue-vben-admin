@@ -57,8 +57,8 @@ export class Memory<T = any, V = any> {
     if (!expires) {
       return value;
     }
-    const now = new Date().getTime();
-    item.time = now + this.alive;
+    const now = new Date().getTime(); // getTime得到的是毫秒数，alive是秒应转换成毫秒
+    item.time = now + this.alive * 1000;
     item.timeoutId = setTimeout(
       () => {
         this.remove(key);
